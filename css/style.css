@@ -14,3 +14,6 @@ body{
     line-height: 1.5;
     border-radius: .25rem;
 }
+.posterImage{
+    width: 150px;
+}

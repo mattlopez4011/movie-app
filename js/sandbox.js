@@ -1,3 +1,4 @@
+// import $ from "./app.js"; // import app.js
 document.addEventListener("DOMContentLoaded", () => {
 
 
@@ -29,25 +30,43 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     let h2 = document.querySelector('.test-text');  // H2 in DOM
-    h2.innerHTML = text;
+    // h2.innerHTML = text;
 
     let parentDiv = document.querySelector('.test-box'); // Selecting parent element in DOM
     let parentDiv2 = document.getElementsByClassName("test-box");
 // parent.appendChild(el);
 // Create new element
 // let newChildDiv = document.createElement('');
-    console.log(content);
+//     console.log(content);
 
-    parentDiv.innerHTML += content; // Sending my html to the test box on the DOM
+    // parentDiv.innerHTML += content; // Sending my html to the test box on the DOM
 // parentDiv2.innerHTML = image; // Sending my html to the test box on the DOM
 // Append the created markup to the DOM
 //     document.body.appendChild(parentDiv2);
 
-    parentDiv.insertAdjacentHTML('beforeend', image); // WORKS!!
+    // parentDiv.insertAdjacentHTML('beforeend', image); // WORKS!!
 
 // ===================================================================================
 //     Playing with movies from movie api
     let movieBox = document.querySelector('.movie-box'); // Select movie-box div
+    // movieBox.innerHTML = ????;
+
+    // ====== Fetch request ======
+
+    // fetch($.urlWithSearchValue)
+    //     .then((data) => data.json())
+    //     .then((data) => {
+    //         // console.log('Data: ', data);
+    //         const movies = data.results;
+    //         // console.log("movies", movies);
+    //
+    //     })
+    //     .catch((error) => {
+    //         console.log('Error: ', error);
+    //     });
+
+
+
 
 
 

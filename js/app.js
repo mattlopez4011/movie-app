@@ -1,8 +1,11 @@
+
 document.addEventListener("DOMContentLoaded", () => {
 
 
 // API key
     const API_KEY = 'bc60faa44c7061b671ee155a3b9e8c3c';
+// First part of url for image
+    const IMAGE_URL = 'https://image.tmdb.org/t/p/w500';
 // API Fetch Url
     const movieAPIUrl = 'https://api.themoviedb.org/3/search/movie?api_key=bc60faa44c7061b671ee155a3b9e8c3c';
 
@@ -10,11 +13,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const searchButton = document.querySelector('#search');
 // Selecting search bar input
     const searchInput = document.querySelector('#inputValue');
+    // Selecting movie div displaying movies container
+    const searchedMovies = document.querySelector('#searched-movies');
 
-    function movieSection(movie) {
+    function movieSection(movies) {
         return movies.map((movie) => {
             return `
-                    <img src=${movie.poster_path} data-movie-id=${movie.id}/ alt="">
+                    <img class="posterImage" src=${IMAGE_URL + movie.poster_path} data-movie-id=${movie.id}/>
             `;
 
         })
@@ -50,25 +55,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // ====== Fetch request ======
 
+
         fetch(urlWithSearchValue)
             .then((data) => data.json())
             .then((data) => {
                 // console.log('Data: ', data);
                 const movies = data.results;
                 console.log("movies", movies);
-                const movieBlock = createMovieContainer(movies); // Returns movie block
-                console.log("movieBlock", movieBlock);
+                const movieBlock = createMovieContainer(movies); // Returns movie div container
+                searchedMovies.appendChild(movieBlock);
+                console.log("movieBlock inside fetch: ", movieBlock);
+
             })
             .catch((error) => {
                 console.log('Error: ', error);
             });
 
         console.log("Search Value:", searchValue);
+
+
+
     };
 
-
-
-
+    // export default {urlWithSearchValue}; // es6 shorthand EXPORTS
 }); // End of DOM content loaded event listener
 
 
