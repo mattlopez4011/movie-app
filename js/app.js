@@ -8,19 +8,21 @@ document.addEventListener("DOMContentLoaded", () => {
     const IMAGE_URL = 'https://image.tmdb.org/t/p/w500';
 // API Fetch Url
     const movieAPIUrl = 'https://api.themoviedb.org/3/search/movie?api_key=bc60faa44c7061b671ee155a3b9e8c3c';
-
+// Loading icon
+    const loadingScreen = document.querySelector('.loader');
 // Selecting search button
     const searchButton = document.querySelector('#search');
 // Selecting search bar input
     const searchInput = document.querySelector('#inputValue');
-    // Selecting movie div displaying movies container
+// Selecting movie div displaying movies container
     const searchedMovies = document.querySelector('#searched-movies');
+
 
     function movieSection(movies) {
         return movies.map((movie) => {
-            return `
-                    <img class="posterImage" src=${IMAGE_URL + movie.poster_path} data-movie-id=${movie.id}/>
-            `;
+            if (movie.poster_path) { // Checking if movie poster is valid or null. Only disply posters that have a URL.
+            return `<img class="posterImage" src=${IMAGE_URL + movie.poster_path} data-movie-id=${movie.id}/>`;
+            }
 
         })
 
@@ -43,6 +45,18 @@ document.addEventListener("DOMContentLoaded", () => {
         movieElement.innerHTML = movieTemplate;
         return movieElement;
     }
+    // data is coming from fetch
+    function renderSearchMovies(data){
+        // data.results []
+        searchedMovies.innerHTML = ''; // Clears movies after each new movie search
+        // console.log('Data: ', data);
+        const movies = data.results; // returns results array from movie API
+        const movieBlock = createMovieContainer(movies); // Returns movie div container
+        searchedMovies.appendChild(movieBlock); // appends movie div to DOM
+        console.log('Data from API: ', data);
+        console.log("movies", movies);
+        console.log("movieBlock inside fetch: ", movieBlock);
+    }
 
 
 // Event listener for search bar button
@@ -52,32 +66,38 @@ document.addEventListener("DOMContentLoaded", () => {
         // Movie api url with users input as the query
         const urlWithSearchValue = movieAPIUrl + '&query=' + searchValue;
         console.log('Search button has been clicked!!!');
+        loadingScreen.style.display = 'block';// Show loading screen
+        setTimeout(function(){
 
-        // ====== Fetch request ======
+            // ====== Fetch request ======
+            fetch(urlWithSearchValue)
+                .then((data) => data.json())
+                .then((data) => {
+                    renderSearchMovies(data); // sends movie data to render HTML to send movie poster to DOM.
+                    loadingScreen.style.display = 'none'; // Hide loading screen
 
+                })
+                .catch((error) => {
+                    console.log('Error: ', error);
+                });
+        }, 1750);
 
-        fetch(urlWithSearchValue)
-            .then((data) => data.json())
-            .then((data) => {
-                // console.log('Data: ', data);
-                const movies = data.results;
-                console.log("movies", movies);
-                const movieBlock = createMovieContainer(movies); // Returns movie div container
-                searchedMovies.appendChild(movieBlock);
-                console.log("movieBlock inside fetch: ", movieBlock);
-
-            })
-            .catch((error) => {
-                console.log('Error: ', error);
-            });
-
+        searchInput.value = ''; // Clears the search input after the search btn has been clicked.
         console.log("Search Value:", searchValue);
-
-
 
     };
 
-    // export default {urlWithSearchValue}; // es6 shorthand EXPORTS
+//  Event listener, Fires when user clicks on a movie.
+    document.onclick = function (event) {
+        const target = event.target;
+        if (target.className === 'posterImage'){
+        console.log('Image was click');
+
+
+        }
+
+    }
+
 }); // End of DOM content loaded event listener
 
 
